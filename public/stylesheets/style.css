@@ -1,0 +1,19 @@
+body {
+  padding: 50px;
+  font: 14px "Raleway", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+.clear {
+	list-style: none;
+	padding-left: 0px;
+}
+.clear li {
+	margin-bottom: 10px;
+	padding-left: 0px;
+}
+.height_50 {
+	height: 50px;
+}
