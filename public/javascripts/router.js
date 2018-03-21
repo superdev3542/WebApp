@@ -25,12 +25,13 @@
       .state('edit', {
         url: '/edit',
         templateUrl: '/javascripts/views/edit.template.html',
-        controller: 'UserController'
+        controller: 'EditController'
       })
       .state('search', {
         url: '/search',
         templateUrl: '/javascripts/views/search.template.html',
-        controller: 'UserController'
+        controller: 'SearchController',
+        controllerAs: '$ctrl'
       });
   }
 }());

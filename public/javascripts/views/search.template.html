@@ -1,9 +1,40 @@
 <div class="users-list">
-  <div class="container" style="margin-top: 50px;">
-    <img src="images/icon.png" alt ="company logo" style="width: 200px; height: 200px;" class="img-responsive center-block">
-  </div>
-  <div class="container input-group" style="margin-top: 80px">
-    <input class="form-control align-center" type="search" placeholder="Search" style="text-align: center; height: 50px;">
-    <span style="height: 50px; background-color: #58b8f5; border-radius: 2px;" class="btn btn-primary btn-lg input-group-addon"><a style="color: white" ui-sref="search_result">Search</a></span>
-  </div>
+  	<div class="container" style="margin-top: 50px;">
+  		<button ng-click="back()" class="btn btn-secondary">Back</button>
+    	<img src="images/icon.png" alt ="company logo" style="width: 200px; height: 200px;" class="img-responsive center-block">
+  	</div>
+  	<div class="container" style="margin-top: 80px">
+  		<input class="form-control align-center" ng-model='search' ng-model-options="{updateOn : 'change blur'}" name='text' id = "search_input" type="search" placeholder="Search" style="text-align: center; height: 50px;"/>
+  	</div>
+  	<div class = "app_data" ng-if="search.length>0">
+  		<div class="container" style="margin-top: 10px; border-bottom: solid 1px #ebebeb;">
+			<h3>{{(downloadedFiles | filter:search).length}} Results</h3>
+		</div>
+	  	<div class="container" ng-repeat="(key, value) in downloadedFiles | filter:search" style="margin-top: 10px">
+
+			<ul class="clear">
+				<li class="row" ng-repeat = "(k, val) in value">
+					<span class="col-xs-6">{{k}}</span>
+					<span class="col-xs-6">{{val}}</span>
+				</li>
+			</ul>
+			<button type="button" id="{{downloadedFiles.indexOf(value)}}" class="btn btn-primary btn-lg btn-block" style="height: 50px; background-color: #58b8f5; border-radius: 2px" ng-click="edit(downloadedFiles.indexOf(value))">EDIT</button>
+		</div>
+	</div>
 </div>
+<!--
+<scirpt>
+	$(document).ready(function(){
+		if($('#search_input').val().length == 0)
+			$('.app_data').hide();
+		else
+			$('.app_data').show();
+		$('#search_input').bind('input',function(){
+			if($('#search_input').val().length == 0)
+				$('.app_data').hide();
+			else
+				$('.app_data').show();
+		});
+	});
+</scirpt>
+-->

@@ -4,18 +4,20 @@ mainApp.controller('UserController', ['$scope', '$http', '$stateParams', '$state
   // variables
 
   $scope.download = function() {
-	UserService.download().then(function(success) {
-		
+	UserService.download().then(function(res) {
+		UserService.setDownloadedFiles(res);
+		UserService.getPickCode().then(function(res) {
+			UserService.setPickList(res);
+			$state.go('search');
+		}, function(err) {
+		});
 	}, function(err) {
-
 	});
+	
+	
   }
   $scope.upload = function() {
-  	UserService.upload().then(function(success) {
-
-	}, function(err) {
-
-	});	
+  	UserService.upload();	
   }
 }]);
 

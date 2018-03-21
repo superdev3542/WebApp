@@ -1,4 +1,8 @@
 mainApp.factory('UserService', function($http, $log, $q) {
+  var downloadedFiles = [];
+  var pickList = [];
+  var editItemId = -1;
+  var changelist= [];
   return {
     download: function() {
       var deferred = $q.defer();
@@ -11,49 +15,50 @@ mainApp.factory('UserService', function($http, $log, $q) {
         });
      return deferred.promise;
     },
-    upload: function() {
+    upload: function() {      
       var deferred = $q.defer();
-      $http.get('/api/v1/users/upload')
-        .success(function() {
-          deferred.resolve();
+      $http.post('/api/v1/users/upload', changelist)
+        .success(function(data, status) {
+          console.log('Data send successfully');
+        });
+    },
+    setDownloadedFiles: function(data) {
+      downloadedFiles = data;
+    },
+    getDownloadedFiles: function() {
+      return downloadedFiles;
+    },
+    getPickCode: function() {
+      var deferred = $q.defer();
+      $http.get('/api/v1/users/getpickcode')
+        .success(function(res) {
+          deferred.resolve(res);
         }).error(function(msg, code) {
           deferred.reject(msg);
           $log.error(msg, code);
         });
-      return deferred.promise;
+     return deferred.promise;
     },
-    // updateUser: function(id, user) {
-    //   var deferred = $q.defer();
-    //   $http.put('/api/v1/users/' + id, user)
-    //     .success(function(user) {
-    //       deferred.resolve(user);
-    //     }).error(function(msg, code) {
-    //       deferred.reject(msg);
-    //       $log.error(msg, code);
-    //     });
-    //   return deferred.promise;
-    // },
-    // editUser: function(id) {
-    //   var deferred = $q.defer();
-    //   $http.get('/api/v1/users/' + id)
-    //     .success(function(user) {
-    //       deferred.resolve(user);
-    //     }).error(function(msg, code) {
-    //       deferred.reject(msg);
-    //       $log.error(msg, code);
-    //     });
-    //   return deferred.promise;
-    // },
-    // deleteUser: function(id) {
-    //   var deferred = $q.defer();
-    //   $http.delete('/api/v1/users/' + id)
-    //     .success(function(user) {
-    //       deferred.resolve(user);
-    //     }).error(function(msg, code) {
-    //       deferred.reject(msg);
-    //       $log.error(msg, code);
-    //     });
-    //   return deferred.promise;
-    // }
+
+    setPickList: function(data) {
+      pickList = data;
+    },
+    getPickList: function() {
+      return pickList;
+    },
+    setEditItemId: function(data) {
+      editItemId = data;
+    },
+    getEditableItem: function() {
+      if (editItemId == 1) {
+        return "routing error";
+      }
+      return downloadedFiles[editItemId];
+    },
+    updateItem: function(data) {
+      downloadedFiles[editItemId]['Pick Zone'] = data;
+      var changeData = {'id': editItemId, 'data':data};
+      changelist.push(changeData);
+    }
   }
 });
